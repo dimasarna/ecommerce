@@ -1,0 +1,15 @@
+{
+    "name": "dimasarna/omnipay-midtrans",
+    "description": "Midtrans gateway for Omnipay payment processing library",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Dimas Arna",
+            "email": "dimasarna3@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": { "Omnipay\\Midtrans\\" : "src/" }
+    }
+}
