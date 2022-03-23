@@ -1,21 +1,6 @@
-:star: Star us on [GitHub](https://github.com/aimeos/aimeos/stargazers) — it motivates us a lot! 😀
+# Laravel ecommerce platform
 
-![Aimeos GitHub stats](https://github-readme-stats.vercel.app/api?username=aimeos&count_private=true&include_all_commits=true&show_icons=true&bg_color=90,103050,109095&title_color=fff&text_color=fff&icon_color=fff&hide=prs)
-
-<a href="https://aimeos.org/">
-    <img src="https://aimeos.org/fileadmin/template/icons/logo.png" alt="Aimeos logo" title="Aimeos" align="right" height="60" />
-</a>
-
-# Aimeos Laravel ecommerce platform
-
-[![Total Downloads](https://poser.pugx.org/aimeos/aimeos/d/total.svg)](https://packagist.org/packages/aimeos/aimeos)
-[![License](https://poser.pugx.org/aimeos/aimeos/license.svg)](https://packagist.org/packages/aimeos/aimeos)
-
-[Aimeos](https://aimeos.org/Laravel) is THE professional, full-featured and
-high performance e-commerce platform! You can install it within 5 minutes
-and can adapt, extend, overwrite and customize anything to your needs.
-
-[![Aimeos Laravel demo](https://aimeos.org/fileadmin/aimeos.org/images/aimeos-github.png)](https://laravel.demo.aimeos.org)
+Fully functional ecommerce platform buit based on [Aimeos](https://aimeos.org) framework that aims for high performance ecommerce platform.
 
 ## Features
 
@@ -49,21 +34,15 @@ Aimeos is a full-featured e-commerce package:
 
 ... and [more Aimeos features](https://aimeos.org/features)
 
-Check out the demos:
-
-* [Aimeos frontend demo](https://laravel.demo.aimeos.org)
-* [Aimeos admin demo](https://admin.demo.aimeos.org)
-
-## Package only
-
-Want to **integrate Aimeos** into your **existing application**?
-
-Use the [Aimeos Laravel package](https://github.com/aimeos/aimeos-laravel) directly!
+With added 2 extensions:
+* Calculate shipping price based on city, thanks to [RajaOngkir](https://rajaongkir.com) API.
+* Integrate with [Midtrans](https://midtrans.com) payment gateway through [Omnipay](https://github.com/thephpleague/omnipay).
 
 ## Table of content
 
 - [Requirements](#requirements)
 - [Installation](#installation)
+- [Configuration](#configuration)
 - [Frontend](#frontend)
 - [Backend](#backend)
 - [Customize](#customize)
@@ -82,27 +61,30 @@ The Aimeos shop distribution requires:
 If required PHP extensions are missing, `composer` will tell you about the missing
 dependencies.
 
-If you want to **upgrade between major versions**, please have a look into the
-[upgrade guide](https://aimeos.org/docs/latest/laravel/setup/#upgrade)!
-
 ## Installation
 
-To install the Aimeos shop application, you need [composer 2.1+](https://getcomposer.org).
-On the CLI, execute this command for a complete installation including a working setup:
+To install this application, you need [composer 2.1+](https://getcomposer.org).
+For composer installation go to composer [download](https://getcomposer.org/download) page.
+
+The first step is to clone this repository and run:
 
 ```
-wget https://getcomposer.org/download/latest-stable/composer.phar -O composer
-php composer create-project aimeos/aimeos myshop
+composer install
 ```
 
-You will be asked for the parameters of your database and mail server as well as an
-e-mail and password used for creating the administration account.
+**Note:** Before run `composer install` command please make copy of folder `vendor` spesifically `vendor/aimeos` so you can replace vendor folder after the `composer install` command. This is because some code are writed on top of composer packages, if you run `composer install` command without backup `vendor` folder the composer will reset the change that happen in the `vendor` folder.
 
-In a local environment, you can use the integrated PHP web server to test your new Aimeos
+Secondly you need to change the parameters of your database and mail server in `.env` file, then run:
+
+```
+php artisan key:generate
+php artisan migrate
+```
+
+In a local environment, you can use the integrated PHP web server to test your new
 installation. Simply execute the following command to start the web server:
 
 ```
-cd myshop
 php artisan serve
 ```
 
@@ -113,6 +95,16 @@ file to your domain without port, e.g.:
 ```
 APP_URL=http://myhostingdomain.com
 ```
+
+## Configuration
+
+For setup RajaOngkir service you need to have API key from RajaOngkir website. API key is hard-coded in `vendor/aimeos/aimeos-core/lib/mshoplib/src/MShop/Service/Provider/Decorator/RajaOngkir.php`.
+
+To create new shipping service, say POS Indonesia, you need to go to administration interface page and select **Services** then add new service. After that configure available option and don't forget to add RajaOngkir as decorator.
+
+For configuring Midtrans related settings you need to go to administration interface page and select **Services** then select **Midtrans**. After that configure available option such as **Server Key** and **Test Mode**.
+
+**Good to notice** that this application using Midtrans built-in snap for handling payment. For usage and documentation please refer to Midtrans [docs](https://docs.midtrans.com) page.
 
 ## Frontend
 
@@ -125,7 +117,12 @@ this URL: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 ## Backend
 
 The Aimeos administration interface will be available at `/admin` in your VHost. When using
-the integrated PHP web server, call this URL: [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+the integrated PHP web server, call this URL: [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin).
+
+Login with this default admin account:
+
+E-mail: admin@example.com
+Password: demo
 
 [![Aimeos admin backend](https://aimeos.org/fileadmin/aimeos.org/images/aimeos-backend.png?2021.04)](http://admin.demo.aimeos.org/)
 
